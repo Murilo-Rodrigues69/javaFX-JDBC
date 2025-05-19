@@ -1,7 +1,9 @@
 package gui;
 
-
+import gui.listeners.DataChangeListener;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import db.DbException;
@@ -24,6 +26,8 @@ public class DeparatamentFormController implements Initializable {
 	private Departament entity;
 	
 	private DepartamentService service;
+	
+	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 	
 	
 	@FXML
@@ -50,6 +54,10 @@ public class DeparatamentFormController implements Initializable {
 		this.service = service;
 	}
 	
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		dataChangeListeners.add(listener);
+	}
+	
 	
 	@FXML
 	public void onBtSaveAction(ActionEvent event) {
@@ -62,6 +70,7 @@ public class DeparatamentFormController implements Initializable {
 		try {
 			entity = getFormData();
 			service.saveOrUpdate(entity);
+			notifyDataChangeListeners();
 			Utils.currentStage(event).close();
 		}
 		catch(DbException e) {
@@ -69,6 +78,13 @@ public class DeparatamentFormController implements Initializable {
 		}
 	}
 	
+	private void notifyDataChangeListeners() {
+		for(DataChangeListener listener: dataChangeListeners) {
+			listener.onDataChanged();
+		}
+		
+	}
+
 	private Departament getFormData() {
 		Departament obj = new Departament();
 		
