@@ -8,7 +8,7 @@ public class Departament implements Serializable {
 
 	private Integer id;
 	private String name;
-
+	
 	public Departament() {
 	}
 

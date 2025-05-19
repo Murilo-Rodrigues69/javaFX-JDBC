@@ -11,20 +11,19 @@ import java.util.List;
 import db.DB;
 import db.DbException;
 import db.DbIntegrityException;
-import model.dao.DepartmentDao;
+import model.dao.DepartamentDao;
 import model.entities.Departament;
-import model.entities.Department;
 
-public class DepartmentDaoJDBC implements DepartmentDao {
+public class DepartamentDaoJDBC implements DepartamentDao {
 
 	private Connection conn;
 	
-	public DepartmentDaoJDBC(Connection conn) {
+	public DepartamentDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
 	
 	@Override
-	public Department findById(Integer id) {
+	public Departament findById(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
@@ -33,7 +32,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Department obj = new Department();
+				Departament obj = new Departament();
 				obj.setId(rs.getInt("Id"));
 				obj.setName(rs.getString("Name"));
 				return obj;
@@ -78,7 +77,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	}
 
 	@Override
-	public void insert(Department obj) {
+	public void insert(Departament obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
@@ -112,7 +111,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	}
 
 	@Override
-	public void update(Department obj) {
+	public void update(Departament obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
@@ -151,4 +150,6 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			DB.closeStatement(st);
 		}
 	}
+
+
 }
